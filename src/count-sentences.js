@@ -12,43 +12,43 @@ import { isAnagram } from './is-anagram'
  */
 
 export function countSentences(wordSet, sentences) {
-  const anagramsCount = {}
+  const anagramsMapping = {}
 
   for (let i = 0; i < wordSet.length - 1; i++) {
     const origin = wordSet[i]
-
-    const currentAnagrams = []
 
     for (let j = i + 1; j < wordSet.length; j++) {
       const candidate = wordSet[j]
       if (isAnagram(origin, candidate)) {
         // console.log(origin, candidate, isAnagram(origin, candidate))
-        const originAnagramsCount = anagramsCount[origin]
-        const newAnagramsCount = originAnagramsCount
-          ? originAnagramsCount + 1 // add to the existing array of anagrams
-          : 1 // first anagram
+        const originAnagramsMap = anagramsMapping[origin]
+        if (originAnagramsMap) {
+          originAnagramsMap.push(candidate)
+        } else {
+          anagramsMapping[origin] = [candidate]
+        }
 
-        anagramsCount[origin] = newAnagramsCount
-        anagramsCount[candidate] = newAnagramsCount
-
-        // TODO: there must be something we can do here to optimise the soarch
-        // we can skip searching for the rest of the wordSet if we already found the anagram
-        currentAnagrams.push(origin, candidate)
+        const candidateAnagramsMap = anagramsMapping[candidate]
+        if (candidateAnagramsMap) {
+          candidateAnagramsMap.push(origin)
+        } else {
+          anagramsMapping[candidate] = [origin]
+        }
       }
     }
   }
 
-  // console.log(anagramsCount)
+  // console.log(anagramsMapping)
 
-  if (Object.keys(anagramsCount).length === 0) {
+  if (Object.keys(anagramsMapping).length === 0) {
     // no anagrams found
     return sentences.map(() => 1)
   } else {
     return sentences.map((sentence) => {
       const wordsInSentence = sentence.split(' ')
       const possibleWordsCountInSentence = wordsInSentence.map((word) =>
-        anagramsCount[word] // account for the word itself if it has no anagram
-          ? anagramsCount[word] + 1
+        anagramsMapping[word]?.length // account for the word itself if it has no anagram
+          ? anagramsMapping[word].length + 1
           : 1
       )
       const numberOfSentenceCanBeFormed = possibleWordsCountInSentence.reduce((acc, curr) => acc * curr, 1)
