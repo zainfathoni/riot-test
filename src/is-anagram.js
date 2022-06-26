@@ -1,16 +1,26 @@
-export function isAnagram(origin, transformed) {
-  let reducedTransformed = transformed
+export function isAnagram(origin, candidate) {
+  if (origin.length !== candidate.length) {
+    // definitely not an anagram
+    return false
+  }
+
+  const originCharCount = {}
   for (let i = 0; i < origin.length; i++) {
-    const originChar = origin[i]
-    const indexOfCharInReducedTransformed = reducedTransformed.indexOf(originChar)
-    if (indexOfCharInReducedTransformed === -1) {
-      return false
+    const currentChar = origin[i]
+    originCharCount[currentChar] = originCharCount[currentChar] ? originCharCount[currentChar] + 1 : 1
+  }
+
+  for (let i = 0; i < candidate.length; i++) {
+    const currentChar = candidate[i]
+    if (originCharCount[currentChar] > 0) {
+      originCharCount[currentChar] = originCharCount[currentChar] - 1
     } else {
-      reducedTransformed =
-        reducedTransformed.substring(0, indexOfCharInReducedTransformed) +
-        reducedTransformed.substring(indexOfCharInReducedTransformed + 1, reducedTransformed.length)
+      return false
     }
   }
 
-  return reducedTransformed.length === 0
+  Object.values(originCharCount).forEach((count) => {
+    if (count > 0) return false
+  })
+  return true
 }
