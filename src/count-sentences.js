@@ -12,43 +12,42 @@ import { isAnagram } from './is-anagram'
  */
 
 export function countSentences(wordSet, sentences) {
-  const anagramsMapping = {}
+  const anagramsCount = {}
 
   for (let i = 0; i < wordSet.length - 1; i++) {
     const origin = wordSet[i]
 
+    const currentAnagramsSet = [origin]
+
     for (let j = i + 1; j < wordSet.length; j++) {
       const candidate = wordSet[j]
-      if (isAnagram(origin, candidate)) {
-        // console.log(origin, candidate, isAnagram(origin, candidate))
-        const originAnagramsMap = anagramsMapping[origin]
-        if (originAnagramsMap) {
-          originAnagramsMap.push(candidate)
-        } else {
-          anagramsMapping[origin] = [candidate]
-        }
-
-        const candidateAnagramsMap = anagramsMapping[candidate]
-        if (candidateAnagramsMap) {
-          candidateAnagramsMap.push(origin)
-        } else {
-          anagramsMapping[candidate] = [origin]
+      const candidateAnagramsMap = anagramsCount[candidate]
+      // this is the first time we see this candidate
+      if (!candidateAnagramsMap) {
+        if (isAnagram(origin, candidate)) {
+          currentAnagramsSet.push(candidate)
         }
       }
+    }
+
+    if (currentAnagramsSet.length > 1) {
+      currentAnagramsSet.forEach((anagram) => {
+        anagramsCount[anagram] = currentAnagramsSet.length - 1
+      })
     }
   }
 
   // console.log(anagramsMapping)
 
-  if (Object.keys(anagramsMapping).length === 0) {
+  if (Object.keys(anagramsCount).length === 0) {
     // no anagrams found
     return sentences.map(() => 1)
   } else {
     return sentences.map((sentence) => {
       const wordsInSentence = sentence.split(' ')
       const possibleWordsCountInSentence = wordsInSentence.map((word) =>
-        anagramsMapping[word]?.length // account for the word itself if it has no anagram
-          ? anagramsMapping[word].length + 1
+        anagramsCount[word] // account for the word itself if it has no anagram
+          ? anagramsCount[word] + 1
           : 1
       )
       const numberOfSentenceCanBeFormed = possibleWordsCountInSentence.reduce((acc, curr) => acc * curr, 1)
