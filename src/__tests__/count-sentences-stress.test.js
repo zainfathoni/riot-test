@@ -46,4 +46,14 @@ describe('countSentences stress tests', () => {
     const sentences = ['an endoscopic end']
     expect(countSentences(words_50_000, sentences)).toEqual([1])
   })
+
+  test('runs 100_000 wordSet within 10 seconds', () => {
+    const sentences = ['an endoscopic end']
+    expect(countSentences(words_100_000, sentences)).toEqual([2])
+  })
+
+  test('runs ~500_000 wordSet within 10 seconds', () => {
+    const sentences = ['an endoscopic end']
+    expect(countSentences(words_alpha, sentences)).toEqual([12])
+  })
 })

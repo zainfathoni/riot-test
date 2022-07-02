@@ -8,7 +8,7 @@ describe('countSentences', () => {
       ['zain', 'niaz', 'inza', 'is', 'not'],
       ['zain is not niaz', 'inza is not zain'],
     ],
-    [[1], ['influenza', 'fluent', 'not', 'i', 'am'], ['i am not fluent in influenza']],
+    [[1], ['influenza', 'fluent', 'not', 'i', 'am', 'in'], ['i am not fluent in influenza']],
   ])('should return the count of possible sentences: %j', (expectedCounts, wordSet, sentences) => {
     expect(countSentences(wordSet, sentences)).toEqual(expectedCounts)
   })
