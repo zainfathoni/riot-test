@@ -24,7 +24,7 @@ export function countSentences(wordSet, sentences) {
   })
 
   return sentences.map((sentence) => {
-    const wordsInSentence = sentence.split(' ')
+    const wordsInSentence = sentence.replace(',', '').replace('.', '').split(' ')
     const possibleWordsCountInSentence = wordsInSentence.map((word) => anagramsCount[word] ?? 1)
     const numberOfSentenceCanBeFormed = possibleWordsCountInSentence.reduce((acc, curr) => acc * curr, 1)
     return numberOfSentenceCanBeFormed

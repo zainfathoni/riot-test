@@ -53,7 +53,14 @@ describe('countSentences stress tests', () => {
   })
 
   test('runs ~500_000 wordSet within 10 seconds', () => {
-    const sentences = ['an endoscopic end']
-    expect(countSentences(words_alpha, sentences)).toEqual([12])
+    const sentences = [
+      'an endoscopic end',
+      'i am not a robot',
+      'somewhere along the way i can do it',
+      'thank you for your time',
+      'i am ready',
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+    ]
+    expect(countSentences(words_alpha, sentences)).toEqual([12, 12, 336, 24, 10, 353894400])
   })
 })
