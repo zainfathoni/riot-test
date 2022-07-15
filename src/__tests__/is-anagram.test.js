@@ -10,7 +10,7 @@ describe('isAnagram', () => {
 
   afterEach(({ meta: { name } }) => {
     tAfter = performance.now()
-    console.log(`${name} test took ${tAfter - tBefore} milliseconds.`)
+    // console.log(`${name} test took ${tAfter - tBefore} milliseconds.`)
   })
 
   test.each([
